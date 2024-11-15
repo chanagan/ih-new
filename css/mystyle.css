@@ -1,0 +1,290 @@
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1em;
+    background-color: #00a7ce;
+    background-color: #f7d2d2;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    margin-top: 20px;
+}
+label {
+    font-size: .5em;
+    font-weight: bold;
+    color: #444;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    column-rule-style:solid 
+}
+
+thead {
+    background-color: #00a7ce;
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+table caption {
+    font-style: italic;
+    font-size: 1.1em;
+    color: #444;
+    margin-bottom: 5px;
+    font-weight: bolder;
+    border-bottom: 2px solid #444;
+}
+th {
+    vertical-align: top;
+}
+.vip {
+    background-color: #4c76ae;
+    color: #fff;
+    font-weight: bold;
+}
+
+.checked_in {
+    background-color: #a8f3ea;
+    color: #444;
+    font-weight: bold;
+}
+.checked_out {
+    background-color: #beb3b3;
+    color: #444;
+    font-weight: bold;
+}
+.canceled {
+    background-color: #f2a48d;
+    color: #fff;
+    font-weight: bold;
+}
+.confirmed {
+    background-color: #00a7ce;
+    color: #fff;
+    font-weight: bold;
+}
+#gstNameDiv {
+    text-align: center;
+}
+
+.do-not-show{
+    display: none;
+}
+tr.highlight {
+    background-color: #d2cdcd;
+    color: #444;
+    font-weight: bold;
+}
+.caveat {
+    font-size: 1.5em;
+    justify-content: center;
+    color: #ef5425;
+    font-weight: bold;
+}
+.data-caveat {
+    font-size: 0.8em;
+    justify-content: center;
+    color: #ef5425;
+    font-weight: bold;
+}
+.do-not-rent {
+    justify-content: center;
+    background-color: #ef5425;
+    color: #fff;
+    font-weight: bold;
+}
+
+.header {
+    /* font-size: .9em; */
+    grid-area: header;
+}
+
+.search {
+    grid-area: search;
+}
+
+.wrapperOld {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 200px 120px 120px;
+    grid-template-areas:
+    "search search ........"
+    "header header header"
+    "leftSide content content"
+    "footer  footer  footer";
+    background-color: #fff;
+    color: #444;
+}
+
+#gstTblDivX {
+    /* font-size: .8em; */
+    color: blue;
+    height: 15em;
+    overflow: auto;
+}
+
+#gstResDivRgt, #gstResDivLft {
+    font-size: .9em;
+    /* color: blue; */
+    height: 23em;
+    overflow: auto;
+}
+
+.scrollable {
+    font-size: .9em;
+    height: 25em;
+    overflow: auto;
+}
+
+
+/* block for the list and detail boxes */
+.wrapperList {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: 50% 50%;
+    grid-template-areas:
+    "list expand ";
+    /* background-color: #fff;
+    color: #444; */
+}
+.list {
+    grid-area: list;
+}
+.expand {
+    grid-area: expand;
+}
+
+td img {
+    width: 12px;
+    height: 12px;
+    /* display: block; */
+    padding-left: 5px;
+}
+
+.grid-item img{
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.footer {
+    grid-area: footer;
+}
+
+td.money {
+    text-align: right;
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative; 
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+
+
+/* Tooltip text */
+td.tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  td:hover .tooltiptext {
+    visibility: visible;
+  }
+
+/* block for guest profile detail */
+.leftSide {
+    grid-area: leftSide;
+    /* font-size: 1.5em; */
+}
+
+.rightSide {
+    grid-area: rightSide;
+    /* font-size: 1em; */
+}
+.wrapperProfile {
+    /* font-size: .6em; */
+    display: grid;
+    gap: 5px;
+    margin: 5px;
+    grid-template-columns: 50% 50%;
+    grid-template-areas:
+    /* "search search "
+    "header header " */
+    "leftSide leftSide ";
+    /* "footer  footer  "; */
+    /* background-color: #fff; */
+    color: #444;
+}
+/* block for guest profile detail */
+
+/* block for guest reservation detail */
+.gstResvDetail {
+    grid-area: gstResvDetail;
+    /* font-size: 1.5em; */
+}
+
+td {
+    padding: 2px;
+    /* justify-content: center; */
+    /* text-align: center; */
+    /* border: 1px solid #ccc; */
+}
+.gstResvRates {
+    grid-area: gstResvRates;
+    /* font-size: 1.5em; */
+}
+.wrapperReservation{
+    /* font-size: .5em; */
+    display: grid;
+    overflow: auto;
+    gap: 5px;
+    margin: 5px;
+    grid-template-columns: 45% 55%;
+    grid-template-areas:
+    "gstResvDetail gstResvRates ";
+    color: #444;
+}
+/* block for guest reservation detail */
+
+.box {
+    background-color: moccasin;
+    background-color: #cee7ec;
+    color: #000;
+    border-radius: 5px;
+    padding: 10px;
+    /* font-size: 1.2em; */
+}
+
+.ih-aq-or {
+    background-color: #00a7ce;
+    color: #ef5425;
+}
+
+.ih-or-aq {
+    background-color: #ef5425;
+    color: #00a7ce;
+}
+
+.header,
+.footer {
+    /* background-color: #999; */
+    background-color: #cee7ec;
+    color: #444;
+}

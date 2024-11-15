@@ -1,0 +1,26 @@
+{
+  "name": "ih-new",
+  "version": "1.0.0",
+  "description": "IH app for CB - House Accounts",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "nodemon --exec electron .",
+    "dist": "electron-builder -w -p always ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^31.2.1",
+    "electron-builder": "^25.0.5",
+    "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "electron-fetch": "^1.9.1",
+    "exceljs": "^4.4.0"
+  }
+}

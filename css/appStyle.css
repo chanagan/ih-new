@@ -1,0 +1,26 @@
+.scrollable {
+    height: 25em;
+    overflow: auto;
+}
+
+.scrollable_shrt {
+    height: 20em;
+    overflow: auto;
+}
+
+thead {
+    background-color: #00a7ce;
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+th [colspan]:not([colspan="1"]) {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size:  .8em;
+}

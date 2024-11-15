@@ -1,0 +1,33 @@
+/* block for the header icons */
+.wrapperTop{
+    display: flex;
+}
+.iconIH {
+    flex: 1;
+    margin: auto;
+}
+.iconCB {
+    flex: 1;
+    margin: auto
+}
+
+/** block for header fields */
+.wrapperHead {  
+    display: flex;
+    color: #444;
+}
+.hdrSearch {
+    flex: 1;
+    margin: auto;
+    font-size: 1.5em;
+}
+.hdrCount {
+    flex: 1;
+    margin: auto;
+    font-size: 1.5em;
+}
+.hdrStatus {
+    flex: 1;
+    margin: auto;
+    font-size: 1.5em;
+}
