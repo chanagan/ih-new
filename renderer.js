@@ -1,11 +1,24 @@
 // import { api } from "./preload.js";
 
-
+// let navVIP = document.getElementById("navVIP");
+// let navHA = document.getElementById("navHA");
 /**
  * set the NAV button handlers
  */
 // navHA.addEventListener("click", showHaList);
 // navVIP.addEventListener("click", showVipList);
+navHA.addEventListener("click", () => {
+  api.send('navLoadView', 'haDiv.html');
+  navVIP.classList.remove('active');
+  navHA.classList.add('active');
+})
+navVIP.addEventListener("click", () => {
+  api.send('navLoadView', 'vipDiv.html');
+  navHA.classList.remove('active');
+  navVIP.classList.add('active');
+});
+
+
 
 
 // chkFilterEmp.addEventListener("click", () => {
@@ -30,10 +43,23 @@ let showRecords = [];
 let showAccounts = [];
 
 window.addEventListener("message", (event) => {
-
+  /*
+  */
   if (event.data.type === "winData") {
     let winData = event.data.data;
-    wrkDiv.innerHTML = winData;
+    wrkDiv.innerHTML = winData.winData;
+    if (winData.data === 'vipDiv.html') {
+      btnDateSearch.addEventListener("click", () => {
+        let resDateFrom = document.getElementById("resDateFrom").value;
+        let resDateTo = document.getElementById("resDateTo").value;
+        // let srchID = 'all'
+        // clearInfoBlocks();
+
+        api.send("getVipResList", { resDateFrom, resDateTo }); // send to main
+
+        // dispVipList(showRecords);
+      })
+    };
   }
   /**
    * have a list of reservations from main=>preload=>renderer
@@ -80,30 +106,30 @@ window.addEventListener("message", (event) => {
     let rowProgress = 0;
 
     // for (let i = 0; i < rowCnt; i++) {
-      if (!nIntervalId) {
-        let i = 0
-        nIntervalId = setInterval(function () {
-          if (i < rowCnt) {
-            // if (i > rowProgress) {
-            //   rowProgress += rowInterv
-            //   progBarInner.style.width = `${rowProgress}%`;
-            // }
-            // let keyID = vipGuests[i].reservationID;
-            // showRecords.push(vipGuests[i]);
-            // api.send("getResDetail", showRecords[i])
-            api.send("getResDetail", vipGuests[i])
-            i++
-            progBar.value = i * 100 / rowCnt
-            progCnt.innerHTML = ` ${i} of ${rowCnt}`
-          } else {
-            progCnt.remove();
-            progBar.remove();
-              console.log('end of vipGuests: ', showRecords);
-            clearInterval(nIntervalId);
-            dispVipList(showRecords);
-          }
-        }, 250);
-      }
+    if (!nIntervalId) {
+      let i = 0
+      nIntervalId = setInterval(function () {
+        if (i < rowCnt) {
+          // if (i > rowProgress) {
+          //   rowProgress += rowInterv
+          //   progBarInner.style.width = `${rowProgress}%`;
+          // }
+          // let keyID = vipGuests[i].reservationID;
+          // showRecords.push(vipGuests[i]);
+          // api.send("getResDetail", showRecords[i])
+          api.send("getResDetail", vipGuests[i])
+          i++
+          progBar.value = i * 100 / rowCnt
+          progCnt.innerHTML = ` ${i} of ${rowCnt}`
+        } else {
+          progCnt.remove();
+          progBar.remove();
+          console.log('end of vipGuests: ', showRecords);
+          clearInterval(nIntervalId);
+          dispVipList(showRecords);
+        }
+      }, 250);
+    }
     // }
     console.log('render: resData: end');
   }

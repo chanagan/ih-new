@@ -1,0 +1,29 @@
+<!-- div for vip reservations -->
+<div class="container-fluid" id="vipList">
+    <!-- date search div     -->
+    <div class="containter mb-3">
+        <div class="row">
+            <div class="col border-bottom border-5 d-flex justify-content-center align-items-center">
+                <label for="resDateFrom" style="padding-right: 5px;">Check-in Date Range: </label>
+                <!-- <br />
+                      -->
+                <input type="date" id="resDateFrom" style="padding-right: 5px;" />
+                <input type="date" id="resDateTo" style="padding-right: 5px;" />
+                <button type="button" class="btn btn-sm btn-primary" id="btnDateSearch">Search</button>
+            </div>
+            <div class="col border-bottom border-5 d-flex justify-content-center align-items-center">
+                <span id="cntRes"></span>
+            </div>
+        </div>
+        <!-- <div class="col border-bottom border-5 d-flex justify-content-center align-items-center">
+                Selected Guest: &nbsp;
+                <span id="dispSelName" style="font-weight: bold;" class="gstDisp"></span>
+            </div> -->
+    </div>
+
+    <!-- reservation list and details   -->
+    <div class="row m-1 scrollable">
+        <div id="resListDiv" class="list scrollable gstDisp "></div>
+    </div>
+</div>
+
