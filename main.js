@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
-const {getResList} = require("./js/vipMainFuncs.js");
+const {getResList, getResDetail} = require("./js/vipMainFuncs.js");
 
 // const fetch = require("electron-fetch").default;
 // const ExcelJS = require('exceljs');
@@ -115,43 +115,11 @@ reservHdrs["dow"] = true
 ipcMain.on("getVipResList", async (event, data) => {
     let dtFrom = data.resDateFrom;
     let dtTo = data.resDateTo;
-    let resList =  getResList(dtFrom, dtTo);
-    // window.webContents.send("resData", resList); // send to preload
+    getResList(window, dtFrom, dtTo);
+        
+})
 
-    // let params = new URLSearchParams({
-    //     propertyID: cbPropertyID,
-    //     // checkInFrom: "2024-08-23",
-    //     // checkInTo: "2024-08-31",
-    //     checkInFrom: dtFrom,
-    //     checkInTo: dtTo,
-    //     // pageNumber: 1,
-    // });
-    // fetch(cbServer + cbApiGetReservations + params, cbOptions)
-    //     .then(res => res.json())
-    //     .then((data) => {
-    //         // console.log("main: getResList: ", data);
-    //         let vipResRecordsList = [];
-    //         resData = data.data;
-    //         for (let i = 0; i < resData.length; i++) {
-    //             if (resData[i].status == 'canceled') {
-    //                 continue
-    //             }
-    //             let resNights = computeNights(resData[i].startDate, resData[i].endDate);
-    //             if (resNights < vipDays) {
-    //                 continue
-    //             }
-    //             resData[i].nights = resNights;
-    //             resData[i].dow = computeDow(resData[i].startDate);
-    //             let tmpRecord = {}
-    //             for (let key in reservHdrs) {
-    //                 tmpRecord[key] = resData[i][key];
-    //             }
-    //             vipResRecordsList.push(tmpRecord);
-    //             // vipResRecordsList.push(resData[i]);
-    //         }
-    //         // data.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
-    //         vipResRecordsList.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
-            // console.log("main: vipResRecordsList: ", vipResRecordsList);
-            // window.webContents.send("resData", vipResRecordsList); // send to preload
+ipcMain.on("getResDetail", async (event, vipRecord) => {
+    getResDetail(window, vipRecord);
         
 })

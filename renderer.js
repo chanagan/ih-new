@@ -1,4 +1,5 @@
 // import { api } from "./preload.js";
+import { getVipList, dispVipList } from "./js/dispResList.js";
 
 // let navVIP = document.getElementById("navVIP");
 // let navHA = document.getElementById("navHA");
@@ -83,21 +84,7 @@ window.addEventListener("message", (event) => {
     let progBar = document.createElement('progress');
     resListDiv.appendChild(progBar)
     let progCnt = document.createElement('span');
-    haProgDiv.appendChild(progCnt);
-
-    // progBar.className = 'progress';
-    // progBar.role = 'progressbar';
-    // progBar.ariaLabel = 'Basic example';
-    // progBar.ariaValuenow = '75';
-    // progBar.ariaValuemin = '0';
-    // progBar.ariaValuemax = '100';
-
-    // <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-    // let progBarInner = document.createElement('div');
-    // progBar.appendChild(progBarInner);
-    // progBarInner.className = 'progress-bar progress-bar-striped progress-bar-animated';
-    // progBarInner.style.width = '0%';
-    // </div>
+    // haProgDiv.appendChild(progCnt);
 
     progBar.id = 'progBar';
     progBar.max = '100';
@@ -110,13 +97,6 @@ window.addEventListener("message", (event) => {
       let i = 0
       nIntervalId = setInterval(function () {
         if (i < rowCnt) {
-          // if (i > rowProgress) {
-          //   rowProgress += rowInterv
-          //   progBarInner.style.width = `${rowProgress}%`;
-          // }
-          // let keyID = vipGuests[i].reservationID;
-          // showRecords.push(vipGuests[i]);
-          // api.send("getResDetail", showRecords[i])
           api.send("getResDetail", vipGuests[i])
           i++
           progBar.value = i * 100 / rowCnt

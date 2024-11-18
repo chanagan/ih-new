@@ -36,7 +36,7 @@ reservHdrs["endDate"] = true
 reservHdrs["adults"] = true
 reservHdrs["dow"] = true
 
-function getResList(dtFrom, dtTo) {
+function getResList(window, dtFrom, dtTo) {
     let params = new URLSearchParams({
         propertyID: cbPropertyID,
         // checkInFrom: "2024-08-23",
@@ -70,10 +70,37 @@ function getResList(dtFrom, dtTo) {
             }
             // data.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
             vipResRecordsList.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
-            return vipResRecordsList
+            window.webContents.send("resData", vipResRecordsList); // send to preload
         })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+function getResDetail(window, vipRecord) {
+    let params = new URLSearchParams({
+        propertyID: cbPropertyID,
+        reservationID: vipRecord.reservationID,
+    });
+    fetch(cbServer + cbApiGetReservation + params, cbOptions)
+        .then(res => res.json())
+        .then((data) => {
+            // console.log("main: getResDetail -vip-pre: ", vipRecord);
+            // console.log("main: getResDetail: data: ", data);
+            resData = data.data;
+            vipRecord.guestList = resData.guestList;
+            vipRecord.isMainGuest = resData.isMainGuest;
+            vipRecord.assignedRoom = resData.assignedRoom;
+            vipRecord.guestStatus = resData.guestStatus;
+            vipRecord.rooms = resData.rooms;
+            console.log("main: getResDetail -vip-post: ", vipRecord);
+
+            // window.webContents.send("gotResDetail", vipRecord);
+        });
+
 }
 
 module.exports = {
-    getResList
+    getResList,
+    getResDetail
 }
