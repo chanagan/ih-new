@@ -56,6 +56,10 @@ window.addEventListener("message", (event) => {
         // clearInfoBlocks();
 
         api.send("getVipResList", { resDateFrom, resDateTo }); // send to main
+        // api.invoke("getVipResList", { resDateFrom, resDateTo })
+        // .then((res) => {
+        //   console.log('main: getVipResList: ', res);
+        // })
 
         // dispVipList(showRecords);
       })
@@ -83,7 +87,7 @@ window.addEventListener("message", (event) => {
     let progBar = document.createElement('progress');
     resListDiv.appendChild(progBar)
     let progCnt = document.createElement('span');
-    haProgDiv.appendChild(progCnt);
+    resListDiv.appendChild(progCnt);
 
     // progBar.className = 'progress';
     // progBar.role = 'progressbar';
@@ -109,25 +113,26 @@ window.addEventListener("message", (event) => {
     if (!nIntervalId) {
       let i = 0
       nIntervalId = setInterval(function () {
-        if (i < rowCnt) {
-          // if (i > rowProgress) {
-          //   rowProgress += rowInterv
-          //   progBarInner.style.width = `${rowProgress}%`;
-          // }
-          // let keyID = vipGuests[i].reservationID;
-          // showRecords.push(vipGuests[i]);
-          // api.send("getResDetail", showRecords[i])
-          api.send("getResDetail", vipGuests[i])
+        for (const res of vipGuests) {
+          api.send("getResDetail", res)
           i++
           progBar.value = i * 100 / rowCnt
           progCnt.innerHTML = ` ${i} of ${rowCnt}`
-        } else {
+        }
+
+        // if (i < rowCnt) {
+        //   // api.send("getResDetail", showRecords[i])
+        //   api.send("getResDetail", vipGuests[i])
+        //   i++
+        //   progBar.value = i * 100 / rowCnt
+        //   progCnt.innerHTML = ` ${i} of ${rowCnt}`
+        // } else {
           progCnt.remove();
           progBar.remove();
           console.log('end of vipGuests: ', showRecords);
           clearInterval(nIntervalId);
-          dispVipList(showRecords);
-        }
+          // dispVipList(showRecords);
+        // }
       }, 250);
     }
     // }

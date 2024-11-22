@@ -36,7 +36,7 @@ reservHdrs["endDate"] = true
 reservHdrs["adults"] = true
 reservHdrs["dow"] = true
 
-function getResList(dtFrom, dtTo) {
+function getResList(window, dtFrom, dtTo) {
     let params = new URLSearchParams({
         propertyID: cbPropertyID,
         // checkInFrom: "2024-08-23",
@@ -51,29 +51,43 @@ function getResList(dtFrom, dtTo) {
             // console.log("main: getResList: ", data);
             let vipResRecordsList = [];
             resData = data.data;
-            for (let i = 0; i < resData.length; i++) {
-                if (resData[i].status == 'canceled') {
+            for (const res of resData) {
+                if (res.status == 'canceled') {
                     continue
                 }
-                let resNights = computeNights(resData[i].startDate, resData[i].endDate);
+                let resNights = computeNights(res.startDate, res.endDate);
                 if (resNights < vipDays) {
                     continue
                 }
-                resData[i].nights = resNights;
-                resData[i].dow = computeDow(resData[i].startDate);
+                res.nights = resNights;
+                res.dow = computeDow(res.startDate);
                 let tmpRecord = {}
                 for (let key in reservHdrs) {
-                    tmpRecord[key] = resData[i][key];
+                    tmpRecord[key] = res[key];
                 }
                 vipResRecordsList.push(tmpRecord);
-                // vipResRecordsList.push(resData[i]);
             }
-            // data.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
             vipResRecordsList.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
-            return vipResRecordsList
+            window.webContents.send("resData", vipResRecordsList); // send to preload
+            // return vipResRecordsList
         })
 }
 
+function getResDetail(window, vipRecord) {
+    let params = new URLSearchParams({
+        propertyID: cbPropertyID,
+        reservationID: vipRecord.reservationID,
+    });
+    fetch(cbServer + cbApiGetReservation + params, cbOptions)
+        .then(res => res.json())
+        .then((data) => {
+            let resDetail = data.data;
+            console.log("main: getResDetail: ", resDetail);
+            
+            // window.webContents.send("resDetail", data); // send to preload
+        })
+}
 module.exports = {
-    getResList
+    getResList,
+    getResDetail
 }
