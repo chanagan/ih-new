@@ -1,4 +1,5 @@
 // import { api } from "./preload.js";
+import { dispVipList } from "./js/vipRenderFuncs.js";
 
 // let navVIP = document.getElementById("navVIP");
 // let navHA = document.getElementById("navHA");
@@ -38,6 +39,8 @@ navVIP.addEventListener("click", () => {
 /*
  * get the search results back from preload.js
  */
+let vipRecCnt = 0;
+let vipDtlCnt = 0;
 
 let showRecords = [];
 let showAccounts = [];
@@ -70,38 +73,16 @@ window.addEventListener("message", (event) => {
    */
   if (event.data.type === "resData") {
     showRecords = [];
-    let resList = event.data.data;
-    // let vipGuests = getVipList(resList);
-    let vipGuests = resList;
+    let vipGuests = event.data.data;
 
-    let rowCnt = vipGuests.length;
-    let intMilSec = 250;
-    let anInterval = 1000 / intMilSec;
-    let rowsPerInterval = rowCnt / anInterval
-    let rowInterv = 100 / rowsPerInterval;
-
-    console.log(`renderer: vipGuests ${rowCnt} : ${rowsPerInterval}`)
+    vipRecCnt = vipGuests.length;
     let nIntervalId;
 
-    // let progBar = document.createElement('div');
+    let resListDiv = document.getElementById("resListDiv");
     let progBar = document.createElement('progress');
     resListDiv.appendChild(progBar)
     let progCnt = document.createElement('span');
     resListDiv.appendChild(progCnt);
-
-    // progBar.className = 'progress';
-    // progBar.role = 'progressbar';
-    // progBar.ariaLabel = 'Basic example';
-    // progBar.ariaValuenow = '75';
-    // progBar.ariaValuemin = '0';
-    // progBar.ariaValuemax = '100';
-
-    // <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-    // let progBarInner = document.createElement('div');
-    // progBar.appendChild(progBarInner);
-    // progBarInner.className = 'progress-bar progress-bar-striped progress-bar-animated';
-    // progBarInner.style.width = '0%';
-    // </div>
 
     progBar.id = 'progBar';
     progBar.max = '100';
@@ -116,8 +97,8 @@ window.addEventListener("message", (event) => {
         for (const res of vipGuests) {
           api.send("getResDetail", res)
           i++
-          progBar.value = i * 100 / rowCnt
-          progCnt.innerHTML = ` ${i} of ${rowCnt}`
+          progBar.value = i * 100 / vipRecCnt
+          progCnt.innerHTML = ` ${i} of ${vipRecCnt}`
         }
 
         // if (i < rowCnt) {
@@ -144,8 +125,14 @@ window.addEventListener("message", (event) => {
    */
   if (event.data.type === "gotResDetail") {
     let resData = event.data.data;
+    // vipDtlCnt++;
     showRecords.push(resData);
-    // console.log('renderer: ', event.data.data);
+    console.log('renderer: ', event.data.data);
+    vipDtlCnt++;
+    if (vipDtlCnt == vipRecCnt) {
+      console.log('render: end of gotResDetail: ', showRecords);
+      dispVipList(showRecords);
+    }
     // dispResDetail(resData);
   }
 

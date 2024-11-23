@@ -82,9 +82,14 @@ function getResDetail(window, vipRecord) {
         .then(res => res.json())
         .then((data) => {
             let resDetail = data.data;
-            console.log("main: getResDetail: ", resDetail);
+            vipRecord.guestList = resDetail.guestList;
+            vipRecord.isMainGuest = resDetail.isMainGuest;
+            vipRecord.assignedRoom = resDetail.assignedRoom;
+            vipRecord.guestStatus = resDetail.guestStatus;
+            vipRecord.rooms = resDetail.rooms;
+            // console.log("main: getResDetail: ", resDetail);
             
-            // window.webContents.send("resDetail", data); // send to preload
+            window.webContents.send("gotResDetail", vipRecord); // send to preload
         })
 }
 module.exports = {

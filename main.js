@@ -80,6 +80,7 @@ ipcMain.on('navLoadView', async (event, data) => {
     window.webContents.send('winData', { data: data, winData: winData });
 });
 
+/*
 const cbPropertyID = cbConfig.cbPropertyID;
 const cbServer = cbConfig.cbServer;
 const cbOptions = cbConfig.cbOptions;
@@ -111,6 +112,7 @@ reservHdrs["startDate"] = true
 reservHdrs["endDate"] = true
 reservHdrs["adults"] = true
 reservHdrs["dow"] = true
+*/
 
 ipcMain.handle("getVipResListX", async (event, data) => {
     let dtFrom = data.resDateFrom;

@@ -38,7 +38,7 @@ ipcRenderer.on('resData', (event, data) => {
 })
 
 ipcRenderer.on('gotResDetail', (event, data) => {
-    // console.log('preload-resData: ', data )
+    console.log('preload-resData: ', data )
     window.postMessage({type: 'gotResDetail', data: data}) // send to renderer
 })
 
