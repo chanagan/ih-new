@@ -67,7 +67,8 @@ function getResList(window, dtFrom, dtTo) {
                 }
                 vipResRecordsList.push(tmpRecord);
             }
-            vipResRecordsList.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+            // vipResRecordsList.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+            console.log("main: getResList: ", vipResRecordsList);
             window.webContents.send("resData", vipResRecordsList); // send to preload
             // return vipResRecordsList
         })

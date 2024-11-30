@@ -1,6 +1,12 @@
 import { dater, computeNights, computeDow } from './utility.js';
 
-const vipDays = 6
+// const vipDays = 6
+let vipRecCnt = 0;
+let vipDtlCnt = 0;
+let progBar
+let progCnt
+let showRecords = [];
+
 
 let tblHdrs = [];
 tblHdrs["reservationID"] = { 'align': 'left', 'value': 'Res ID' };
@@ -31,7 +37,56 @@ let statusHdrs = {
     , 'vip': 'VIP'
 }
 
-export function dispVipList(vipRecords) {
+export function vipLoadList(vipGuests) {
+    showRecords = [];
+    // let vipGuests = event.data.data;
+
+    vipRecCnt = vipGuests.length;
+    vipDtlCnt = 0;
+    let nIntervalId;
+
+    let resListDiv = document.getElementById("resListDiv");
+    if (resListDiv.firstChild) {
+      resListDiv.removeChild(resListDiv.firstChild);
+    }
+
+    progBar = document.createElement('progress');
+    resListDiv.appendChild(progBar)
+    progCnt = document.createElement('span');
+    resListDiv.appendChild(progCnt);
+
+    progBar.id = 'progBar';
+    progBar.max = '100';
+    progBar.value = '0';
+
+    for (const res of vipGuests) {
+      // console.log('getResDetail: ', res);
+      api.send("getResDetail", res); // send to main
+    }
+    // console.log('render: resData: end');
+  }
+
+export function vipLoadDetail(vipRecord) {
+    showRecords.push(vipRecord);
+    // console.log('renderer: ', vipRecord);
+    vipDtlCnt++;
+    progBar.value = vipDtlCnt * 100 / vipRecCnt
+    progCnt.innerHTML = ` ${vipDtlCnt} of ${vipRecCnt}`
+
+    // once we have all the details, we can display the list
+    if (vipDtlCnt == vipRecCnt) {
+      progCnt.remove();
+      progBar.remove();
+      // console.log('render: end of gotResDetail: ', showRecords);
+      dispVipList(showRecords);
+    }
+}
+
+
+ function dispVipList(vipRecords) {
+    vipRecords.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+
+    let resListDiv = document.getElementById("resListDiv");
 
     let displayCount = 0
     let rowCnt = vipRecords.length
@@ -48,7 +103,7 @@ export function dispVipList(vipRecords) {
     listTable.style.border = "1px solid red";
     listTable.id = "listTbl";
     listTable.className = "table table-sm table-hover";
-    // resListDiv.appendChild(listTable);
+    resListDiv.appendChild(listTable);
 
     // now need to create the table parts
     listHead = document.createElement("thead");
@@ -81,12 +136,6 @@ export function dispVipList(vipRecords) {
 
         // get the record and check some filters
         let record = vipRecords[i];
-        if (record.status === "canceled") {
-            continue;
-        }
-        if (record.nights < vipDays) {
-            continue;
-        }
 
         // need a row for each record
         listRow = document.createElement("tr");
@@ -101,25 +150,19 @@ export function dispVipList(vipRecords) {
             listRow.appendChild(listCell);
             switch (key) {
                 case "startDate":
-                    // listCell.setAttribute('align', tblHdrs[key].align);
                     listCell.style.textAlign = tblHdrs[key].align;
                     listCell.innerHTML = dater(record[key]);
                     break;
                 case "dow":
-                    let dowNum = new Date(record.startDate).getDay();
-                    // listCell.setAttribute('align', tblHdrs[key].align);
+                    // let dowNum = new Date(record.startDate).getDay();
                     listCell.style.textAlign = tblHdrs[key].align;
-                    listCell.innerHTML = computeDow(record.startDate);
-                     // daysOfWeek[dowNum];
-                    // listCell.innerHTML = daysOfWeek[dowNum];
+                    listCell.innerHTML = record[key];
+                    // listCell.innerHTML = computeDow(record.startDate);
                     break;
                 case 'adults':
                     // first, put this cell's data into the table
-                    listCell.innerHTML = record.adults;
                     listCell.style.textAlign = tblHdrs[key].align;
-                    // listCell.setAttribute('align', tblHdrs[key].align);
-
-                    // // here, we're going to tack on the rest of the details
+                    listCell.innerHTML = record[key];
 
                     // start adding columns for the detail information
                     for (let inrKey in gstTblHdrs) {
@@ -139,81 +182,20 @@ export function dispVipList(vipRecords) {
                                     if (isFirst) {
                                         let el = guestRecord[inrKey]
                                         el = (el) ? el : ''
-                                        // listCell.style.textAlign = gstTblHdrs[key].align;
                                         listCell.innerHTML += `${el} <br/>`;
                                     }
                                     break
                                 default:
-                                    // listCell.style.textAlign = gstTblHdrs[key].align;
                                     listCell.innerHTML += `${guestRecord[inrKey]} <br/>`;
                                     break;
                             }
                             isFirst = false
                         }
                     }
-
-                    continue
-                    // let guestTable = document.createElement("table");
-                    // guestTable.id = "guestTbl";
-                    // guestTable.className = "table  table-hover";
-                    // listCell.appendChild(guestTable);
-
-                    // for each guest, make a row
-                    let guestRow, guestCell;
-                    for (const [guestID, guestRecord] of Object.entries(record.guestList)) {
-                        guestRow = document.createElement("tr");
-                        guestTable.appendChild(guestRow);
-
-                        guestCell = document.createElement("td");
-                        guestRow.appendChild(guestCell);
-                        guestCell.innerHTML = guestID;
-
-                        guestCell = document.createElement("td");
-                        guestRow.appendChild(guestCell);
-                        guestCell.innerHTML = guestRecord.guestLastName;
-
-                        guestCell = document.createElement("td");
-                        guestRow.appendChild(guestCell);
-                        guestCell.innerHTML = guestRecord.guestFirstName;
-
-                        guestCell = document.createElement("td");
-                        guestRow.appendChild(guestCell);
-                        guestCell.innerHTML = guestRecord.isMainGuest;
-
-                        guestCell = document.createElement("td");
-                        guestRow.appendChild(guestCell);
-                        guestCell.innerHTML = guestRecord.assignedRoom;
-
-                        guestCell = document.createElement("td");
-                        guestRow.appendChild(guestCell);
-                        guestCell.innerHTML = guestRecord.guestStatus;
-
-                        guestCell = document.createElement("td");
-                        guestRow.appendChild(guestCell);
-                        let roomName = guestRecord.rooms.length > 0 ? guestRecord.rooms[0].roomName : '';
-                        guestCell.innerHTML = roomName;
-                        // guestCell.innerHTML = guestRecord.rooms[0].roomName;
-                    }
-
-                    // let guestCount = Object.keys(record.guestList).length
-                    // listCell.setAttribute('align', tblHdrs[key].align);
-                    // listCell.innerHTML = guestCount;
-
-                    /**
-                     * 
-                     * for (const [key, value] of Object.entries(exampleData)) {
-                      const keyCoords = parseCoords(key);
-                      console.log({keyCoords, valueCoords: value});
-                    } */
-                    for (const [guestID, guestRecord] of Object.entries(record.guestList)) {
-                        console.log(`dispResList: guestList: ${guestID} : ${guestRecord.guestLastName}`);
-                    }
-
                     break
                 case "nights":
                 case "adults":
                     listCell.style.textAlign = tblHdrs[key].align;
-                    // listCell.setAttribute('align', tblHdrs[key].align);
                 default:
                     listCell.style.textAlign = tblHdrs[key].align;
                     listCell.innerHTML = record[key];
@@ -221,8 +203,7 @@ export function dispVipList(vipRecords) {
             }
         }
     }
-    resListDiv.appendChild(listTable);
 
-    console.log("dispResList: listTable: ", listTable);
+    // console.log("dispResList: listTable: ", listTable);
     return displayCount;
 }

@@ -80,39 +80,7 @@ ipcMain.on('navLoadView', async (event, data) => {
     window.webContents.send('winData', { data: data, winData: winData });
 });
 
-/*
-const cbPropertyID = cbConfig.cbPropertyID;
-const cbServer = cbConfig.cbServer;
-const cbOptions = cbConfig.cbOptions;
 
-const cbApiHA_Details = "getHouseAccountDetails?";
-const cbApiHA_List = "getHouseAccountList?";
-const cbApiGetReservations = "getReservations?";
-const cbApiGetReservation = "getReservation?";
-
-const computeNights = (startDate, endDate) => {
-    let start = new Date(startDate);
-    let end = new Date(endDate);
-    let timeDiff = Math.abs(end.getTime() - start.getTime());
-    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    return diffDays
-}
-const computeDow = (startDate) => {
-    let start = new Date(startDate).getDay();
-    return daysOfWeek[start];
-}
-const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const vipDays = 6
-
-let reservHdrs = []
-reservHdrs["reservationID"] = true
-reservHdrs["guestName"] = true
-reservHdrs["nights"] = true
-reservHdrs["startDate"] = true
-reservHdrs["endDate"] = true
-reservHdrs["adults"] = true
-reservHdrs["dow"] = true
-*/
 
 ipcMain.handle("getVipResListX", async (event, data) => {
     let dtFrom = data.resDateFrom;
