@@ -37,6 +37,11 @@ let statusHdrs = {
     , 'vip': 'VIP'
 }
 
+export function vipExportList() {
+    console.log('vipExportList: ', showRecords);
+    api.send("printVipList", showRecords);
+}
+
 export function vipLoadList(vipGuests) {
     showRecords = [];
     // let vipGuests = event.data.data;
@@ -90,7 +95,7 @@ export function vipLoadDetail(vipRecord) {
 
     let displayCount = 0
     let rowCnt = vipRecords.length
-    console.log(`showVipList: count: ${rowCnt} : ${vipRecords}`);
+    console.log(`vipRenderFuncs: showVipList: count: ${rowCnt} : ${vipRecords}`);
     // return;
 
 

@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
-const {getResList, getResDetail} = require("./js/vipMainFuncs.js");
+const {getResList, getResDetail, exportVipList} = require("./js/vipMainFuncs.js");
 
 // const fetch = require("electron-fetch").default;
 // const ExcelJS = require('exceljs');
@@ -97,4 +97,9 @@ ipcMain.on("getVipResList", async (event, data) => {
 
 ipcMain.on('getResDetail', async (event, vipRecord) => {
     getResDetail(window, vipRecord);
+});
+
+ipcMain.on('printVipList', async (event, vipRecords) => {
+    // console.log('main: printVipList: ', vipRecords);
+    exportVipList(window, vipRecords);   
 });

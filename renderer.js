@@ -1,5 +1,5 @@
 // import { api } from "./preload.js";
-import { vipLoadList, vipLoadDetail } from "./js/vipRenderFuncs.js";
+import { vipLoadList, vipLoadDetail, vipExportList } from "./js/vipRenderFuncs.js";
 
 // let navVIP = document.getElementById("navVIP");
 // let navHA = document.getElementById("navHA");
@@ -17,7 +17,6 @@ navHA.addEventListener("click", () => {
 navVIP.addEventListener("click", () => {
   navHA.classList.remove('active');
   navVIP.classList.add('active');
-  vipDiv.style.display = 'flex';
   api.send('navLoadView', 'vipDiv.html');
 });
 
@@ -27,15 +26,22 @@ window.addEventListener("message", (event) => {
   */
   if (event.data.type === "winData") {
     let winData = event.data.data;
+    wrkDiv.innerHTML = winData.winData;
     if (winData.data === 'vipDiv.html') {
       // if (!vipDiv.firstChild) {
-        vipDiv.innerHTML = winData.winData;
+        wrkDiv.innerHTML = winData.winData;
         btnDateSearch.addEventListener("click", () => {
           let resDateFrom = document.getElementById("resDateFrom").value;
           let resDateTo = document.getElementById("resDateTo").value;
           api.send("getVipResList", { resDateFrom, resDateTo }); // send to main
-
         });
+
+        btnVipListPrint.addEventListener("click", () => {
+          vipExportList();
+          // const listTblId = document.getElementById("listTbl");
+          // api.send("printVipList", listTblId.innerHTML);
+        });
+        
       // }
     };
   }

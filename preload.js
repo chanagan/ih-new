@@ -33,12 +33,12 @@ ipcRenderer.on('gotHaDetail', (event, data) => {
 })
 
 ipcRenderer.on('resData', (event, vipResRecordsList) => {
-    console.log('preload-resData: ', vipResRecordsList )
+    // console.log('preload-resData: ', vipResRecordsList )
     window.postMessage({type: 'resData', data: vipResRecordsList}) // send to renderer
 })
 
 ipcRenderer.on('gotResDetail', (event, data) => {
-    console.log('preload-resData: ', data )
+    // console.log('preload-gotResDetail: ', data )
     window.postMessage({type: 'gotResDetail', data: data}) // send to renderer
 })
 
