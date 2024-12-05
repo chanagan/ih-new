@@ -126,6 +126,8 @@ let exColFormat = [
     { alignment: 'center', bold: false },
     { alignment: 'center', bold: false },
     { alignment: 'center', bold: true },
+    { alignment: 'center', bold: true },
+    { alignment: 'center', bold: true },
 ]
 
 const workbookFile = path.join(appData, "ih-vip.xlsx");
@@ -166,10 +168,10 @@ function exportVipList(window, vipResRecordsList) {
             ySplit: 1
         }
     });
-    const font = { name: 'Arial Black', size: 14, bold: true }
-    const dataFont = { name: 'Arial', size: 12, bold: false }
+    const font = { name: 'Segoe UI Black', size: 9, bold: true }
+    const dataFont = { name: 'Segoe UI', size: 9, bold: false }
     worksheet.columns = [
-        { header: 'Reservation ID', key: 'reservationID', width: 18, style: { font: font } },
+        { header: 'Res ID', key: 'reservationID', width: 18, style: { font: font } },
         { header: 'Guest Name', key: 'guestName', width: 20, style: { font: font } },
         { header: 'Nights', key: 'nights', width: 10, style: { font: font } },
         { header: 'Check In', key: 'startDate', width: 15, style: { font: font } },
@@ -182,6 +184,8 @@ function exportVipList(window, vipResRecordsList) {
         { header: 'Assgnd?', key: 'assignedRoom', width: 11, style: { font: font } },
         { header: 'Status', key: 'guestStatus', width: 10, style: { font: font } },
         { header: 'Room', key: 'roomName', width: 8, style: { font: font } },
+        { header: 'Previous', key: 'prev', width: 20, style: { font: font } },
+        { header: 'Now', key: 'now', width: 20, style: { font: font } },
     ]
 
     for (let i = 0; i < vipCnt; i++) {
