@@ -188,11 +188,11 @@ function exportVipList(window, vipResRecordsList) {
         { header: 'Now', key: 'now', width: 20, style: { font: font } },
     ]
 
+    let thisRow;
     for (let i = 0; i < vipCnt; i++) {
         let vipRecord = vipResRecordsList[i];
         // let [guestID, guestRecord] = vipRecord.guestList
         let firstTime = true;
-        let thisRow;
         for (const [guestID, guestRecord] of Object.entries(vipRecord.guestList)) {
             if (firstTime) {
                 let recStat = guestRecord.guestStatus
@@ -236,6 +236,9 @@ function exportVipList(window, vipResRecordsList) {
             }
             console.log('vipMainFuncs: vipExportList: ', cell.value, colNumber, rowNumber, notPrimGst);
         })
+        if (notPrimGst) {
+            row.getCell(8).font = {bold: false};
+        }
 
         // if (rowNumber > 1) {
         //     row.eachCell(function (cell, colNumber) {
@@ -244,6 +247,21 @@ function exportVipList(window, vipResRecordsList) {
         //     });
         // }
     });
+    let rowCnt = worksheet.rowCount;
+    let colCnt = worksheet.columnCount-2;
+    
+    thisRow = worksheet.getRow(rowCnt);
+    for (let i = 1; i <= colCnt; i++) {
+        thisRow.getCell(i).border = {
+            bottom: { style: 'thin', color: { argb: "FFFF0000" } },
+        }
+    }
+    // thisRow.eachCell(function (cell, colNumber) {
+    //     thisRow.getCell(colNumber).border = {
+    //         bottom: { style: 'thin', color: { argb: "FFFF0000" } },
+    //     };
+    // });
+
     // let vipTbl = window.webContents.document.getElementById('resListDiv');
     workbook.xlsx.writeFile(workbookFile)
         .then(() => {
